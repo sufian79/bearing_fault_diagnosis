@@ -3,3 +3,6 @@ torch
 pandas
 numpy
 scikit-learn
+scipy
+matplotlib
+io
