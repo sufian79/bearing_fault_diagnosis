@@ -43,7 +43,7 @@ def analyze_signal(df, selected_channels, model_name, RPM, Nb, Bd, Pd, beta_deg)
     fault_type = int(np.argmax(probs))
     fault_label = labels[fault_type]
     fault_size = float(output[-1][4].item())
-    alert = "✅ No Fault" if fault_type == 0 else f"⚠️ {} fault, size: {:.2f} mm".format(fault_label, fault_size)
+    alert = "✅ No Fault" if fault_type == 0 else f"⚠️ {fault_label} fault, size: {fault_size:.2f} mm"
 
     fault_freqs = calculate_fault_frequencies(RPM, Nb, Bd, Pd, beta_deg)
 
