@@ -48,7 +48,7 @@ def analyze_signal(df, selected_channels, model_name, RPM, Nb, Bd, Pd, beta_deg)
     with torch.no_grad():
         output = model(input_tensor)
 
-    probs = torch.softmax(output[1][0][:4], dim=0).numpy()
+    probs = torch.softmax(output[1][0][:3], dim=0).numpy()
     fault_type = int(np.argmax(probs))
     fault_label = labels[fault_type]
     fault_size = float(output[-1][0][0].item())
