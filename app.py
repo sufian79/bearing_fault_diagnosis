@@ -55,10 +55,10 @@ def analyze_signal(df, selected_channels, model_name, RPM, Nb, Bd, Pd, beta_deg)
         else:
             st.write(f"Output shape: {output.shape}")
 
-    probs = torch.softmax(output[1][:4], dim=0).numpy()
+    probs = torch.softmax(output[1][0][:4], dim=0).numpy()
     fault_type = int(np.argmax(probs))
     fault_label = labels[fault_type]
-    fault_size = float(output[-1][4].item())
+    fault_size = float(output[-1][0][0].item())
     alert = "✅ No Fault" if fault_type == 0 else f"⚠️ {fault_label} fault, size: {fault_size:.2f} mm"
 
     fault_freqs = calculate_fault_frequencies(RPM, Nb, Bd, Pd, beta_deg)
