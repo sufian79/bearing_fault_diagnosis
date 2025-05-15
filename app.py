@@ -48,6 +48,13 @@ def analyze_signal(df, selected_channels, model_name, RPM, Nb, Bd, Pd, beta_deg)
     with torch.no_grad():
         output = model(input_tensor)
 
+        st.write(f"Output type: {type(output)}")
+        if isinstance(output, (tuple, list)):
+            for i, out in enumerate(output):
+                st.write(f"Output[{i}] shape: {out.shape}")
+        else:
+            st.write(f"Output shape: {output.shape}")
+
     probs = torch.softmax(output[1][:4], dim=0).numpy()
     fault_type = int(np.argmax(probs))
     fault_label = labels[fault_type]
