@@ -124,7 +124,7 @@ if analyze:
             alert, fig, probs_dict, fault_size = analyze_signal(
                 df_global, selected_channels, model_name, rpm, nb, bd, Pd, beta
             )
-            st.text_area("⚠️ Fault Alert", value=alert, height=40)
+            st.text_area("⚠️ Fault Alert", value=alert, height=100)
             st.pyplot(fig)
             st.subheader("🧠 Fault Type Probability")
             for label, prob in probs_dict.items():
