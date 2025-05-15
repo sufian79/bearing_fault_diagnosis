@@ -105,7 +105,7 @@ with st.sidebar:
     rpm = st.number_input("RPM", value=1800)
     nb = st.number_input("Number of Balls", value=9)
     bd = st.number_input("Ball Diameter (mm)", value=7.94, format="%.2f")
-    pd = st.number_input("Pitch Diameter (mm)", value=38.5, format="%.2f")
+    Pd = st.number_input("Pitch Diameter (mm)", value=38.5, format="%.2f")
     beta = st.number_input("Contact Angle (deg)", value=0)
 
     analyze = st.button("🔍 Analyze & Predict")
@@ -120,7 +120,7 @@ if analyze:
             st.write("📄 Preview of uploaded data:")
             st.dataframe(df_global.head())
             alert, fig, probs_dict, fault_size = analyze_signal(
-                df_global, selected_channels, model_name, rpm, nb, bd, pd, beta
+                df_global, selected_channels, model_name, rpm, nb, bd, Pd, beta
             )
             st.text_area("⚠️ Fault Alert", value=alert, height=40)
             st.pyplot(fig)
