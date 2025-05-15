@@ -23,7 +23,7 @@ def calculate_fault_frequencies(RPM, Nb, Bd, Pd, beta_deg):
 
 def analyze_signal(df, selected_channels, model_name, RPM, Nb, Bd, Pd, beta_deg):
     # Ensure numeric values only
-    df = df.apply(pd.to_numeric, errors='coerce').fillna(0)
+    df = df.apply(lambda col: pd.to_numeric(col, errors='coerce')).fillna(0)
 
     selected_indices = [df.columns.get_loc(ch) for ch in selected_channels]
     
