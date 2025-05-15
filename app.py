@@ -23,13 +23,20 @@ def calculate_fault_frequencies(RPM, Nb, Bd, Pd, beta_deg):
 
 def analyze_signal(df, selected_channels, model_name, RPM, Nb, Bd, Pd, beta_deg):
     selected_indices = [df.columns.get_loc(ch) for ch in selected_channels]
-    
+
+    # Convert all columns to numeric, coerce errors to NaN, then fill NaNs with 0
+    df_clean = df.apply(pd.to_numeric, errors='coerce').fillna(0)
+
     # Extract 1024-sample signal per channel, then stack
-    signals = df.iloc[:1024, selected_indices].values.T  # shape: [channels, 1024]
+    signals = df_clean.iloc[:1024, selected_indices].values.T  # shape: [channels, 1024]
+    
     if signals.shape[1] < 1024:
         pad_width = 1024 - signals.shape[1]
-        signals = np.pad(signals, ((0,0), (0,pad_width)))
-    input_tensor = torch.tensor(signals, dtype=torch.float32).unsqueeze(0)  # shape: [1, C, 1024]
+        signals = np.pad(signals, ((0, 0), (0, pad_width)), mode='constant')
+    
+    # Ensure float32 dtype for torch conversion
+    signals = signals.astype(np.float32)
+    input_tensor = torch.tensor(signals).unsqueeze(0)  # shape: [1, C, 1024]
 
     # Load model dynamically
     model = hm.get_model(model_name, input_channels=len(selected_indices))
@@ -70,6 +77,7 @@ def analyze_signal(df, selected_channels, model_name, RPM, Nb, Bd, Pd, beta_deg)
 
     plt.tight_layout()
     return alert, fig, {labels[i]: float(probs[i]) for i in range(4)}, fault_size
+
 
 # Streamlit UI starts here
 st.set_page_config(layout="wide")
