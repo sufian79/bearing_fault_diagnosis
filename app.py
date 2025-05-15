@@ -7,7 +7,7 @@ from scipy.signal import stft
 from scipy.fftpack import fft
 import hybrid_models as hm
 
-labels = ["Normal", "Inner Race", "Outer Race", "Ball"]
+labels = ["Normal", "Outer Race", "Inner Race"]
 
 # Global dataframe storage
 df_global = None
