@@ -38,8 +38,10 @@ def analyze_signal(df, selected_channels, model_name, RPM, Nb, Bd, Pd, beta_deg)
 
     input_tensor = torch.tensor(signals, dtype=torch.float32).unsqueeze(0)  # [1, C, 1024]
 
-    # Load model dynamically
-    model = hm.get_model(model_name, input_channels=len(selected_indices))
+    # Dynamically get model class by name from hybrid_models module
+    ModelClass = getattr(hm, model_name+ "_pt")  
+    model = ModelClass(input_channels=len(selected_indices))
+
     model.load_state_dict(torch.load(f"{model_name}.pt", map_location=torch.device('cpu')))
     model.eval()
 
