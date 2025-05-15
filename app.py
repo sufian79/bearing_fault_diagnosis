@@ -22,8 +22,11 @@ def calculate_fault_frequencies(RPM, Nb, Bd, Pd, beta_deg):
     return {"FTF": FTF, "BPFI": BPFI, "BPFO": BPFO, "BSF": BSF}
 
 def analyze_signal(df, selected_channels, model_name, RPM, Nb, Bd, Pd, beta_deg):
-    # Ensure numeric values only
-    df = df.apply(lambda col: pd.to_numeric(col, errors='coerce')).fillna(0)
+    # Safely ensure all values are numeric
+    if isinstance(df, pd.DataFrame):
+        for col in df.columns:
+            df[col] = pd.to_numeric(df[col], errors='coerce')
+        df = df.fillna(0)
 
     selected_indices = [df.columns.get_loc(ch) for ch in selected_channels]
     
