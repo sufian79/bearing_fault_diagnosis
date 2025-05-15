@@ -42,7 +42,7 @@ def analyze_signal(df, selected_channels, model_name, RPM, Nb, Bd, Pd, beta_deg)
     ModelClass = getattr(hm, model_name+ "1D_pt")  
     model = ModelClass(input_channels=len(selected_indices))
 
-    model.load_state_dict(torch.load(f"{model_name}.pt", map_location=torch.device('cpu')))
+    model.load_state_dict(torch.load(f"models/{model_name}.pt", map_location=torch.device('cpu')))
     model.eval()
 
     with torch.no_grad():
