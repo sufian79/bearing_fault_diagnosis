@@ -50,9 +50,6 @@ def analyze_signal(df, selected_channels, model_name, RPM, Nb, Bd, Pd, beta_deg)
 
     probs = torch.softmax(output[1][0][:3], dim=0).numpy()
     fault_type = int(np.argmax(probs))
-
-    print(f"DEBUG: probs shape={probs.shape}, fault_type={fault_type}, labels len={len(labels)}")
-    
     fault_label = labels[fault_type] if fault_type < len(labels) else "Unknown"
     fault_size = float(output[-1][0][0].item())
     alert = "✅ No Fault" if fault_type == 0 else f"⚠️ {fault_label} fault, size: {fault_size:.2f} mm"
@@ -81,7 +78,7 @@ def analyze_signal(df, selected_channels, model_name, RPM, Nb, Bd, Pd, beta_deg)
     axs[2].set_xlabel('Time [sec]')
 
     plt.tight_layout()
-    return alert, fig, {labels[i]: float(probs[i]) for i in range(4)}, fault_size
+    return alert, fig, {labels[i]: float(probs[i]) for i in range(len(probs))}, fault_size
 
 # Streamlit UI
 st.set_page_config(layout="wide")
