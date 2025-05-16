@@ -144,10 +144,9 @@ with st.sidebar:
     uploaded_file = st.file_uploader("Upload Multi-Channel CSV", type=["csv"])
     if uploaded_file:
         try:
-            df_global = pd.read_csv(uploaded_file, header=None)
+            df_global = pd.read_csv(uploaded_file, header=0)
             if not isinstance(df_global, pd.DataFrame) or df_global.empty:
                 raise ValueError("Uploaded file is not a valid DataFrame or is empty.")
-            df_global.columns = [f"Channel {i}" for i in range(df_global.shape[1])]
             channels = df_global.columns.tolist()
         except Exception as e:
             st.error(f"Error reading CSV: {e}")
